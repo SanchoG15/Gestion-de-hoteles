@@ -5,19 +5,16 @@ public class Alojamiento {
 	protected int codigoAl;
 	protected String tipoAl;
 	protected String pais;
-	protected static String nombreAl;
-	protected static int fechaMes;
-	protected static int fechaDia;
+	protected String nombreAl;
+	protected int precioAl;
 
 	// Constructor de la clase
-	public Alojamiento(int codigoAl, String tipoAl, String pais, String nombreAl, int fechaMes, int fechaDia) {
+	public Alojamiento(int codigoAl, String tipoAl, String pais, String nombreAl) {
 
 		codigoAl = this.codigoAl;
 		tipoAl = this.tipoAl;
 		pais = this.pais;
 		nombreAl = this.nombreAl;
-		fechaMes = this.fechaMes;
-		fechaDia = this.fechaDia;
 
 	}
 
@@ -46,28 +43,13 @@ public class Alojamiento {
 		this.pais = pais;
 	}
 
-	public static String getNombreAl() {
+	public String getNombreAl() {
 		return nombreAl;
 	}
 
-	public static void setNombreAl(String nombreAl) {
-		Alojamiento.nombreAl = nombreAl;
+	public void setNombreAl(String nombreAl) {
+		nombreAl = nombreAl;
 	}
 
-	public static int getFechaMes() {
-		return fechaMes;
-	}
-
-	public static void setFechaMes(int fechaMes) {
-		Alojamiento.fechaMes = fechaMes;
-	}
-
-	public static int getFechaDia() {
-		return fechaDia;
-	}
-
-	public static void setFechaDia(int fechaDia) {
-		Alojamiento.fechaDia = fechaDia;
-	}
-
+	
 }

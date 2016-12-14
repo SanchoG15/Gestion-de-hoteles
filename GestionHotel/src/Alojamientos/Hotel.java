@@ -5,35 +5,35 @@ import java.io.Serializable;
 public abstract class Hotel extends Alojamiento implements Serializable {
 	private static final long serialVersionUID = 1029656478665098638L;
 	
-	private String nombreH;
-	private int precio;
+	//private String nombreH;
+	//private int precio;
 	private int estrellas;
-	static String[] hoteles = { "NH", "Ac", "Hilton", "Tryp", "Hesperia", "Hotel Europa", "Melia", "Park Hotel" };
+	static String[] hoteles = { "NH", "Barcelo", "Hilton", "Tryp", "Hesperia", "Hotel Europa", "Melia", "Park Hotel" };
 
 	//Constructor de la clase
 	public Hotel(String nombreH, int precio, int estrellas, int codigoAl, String tipoAl, String pais,
-			String[] hoteles) {
-		super(codigoAl, tipoAl, pais, nombreAl, fechaMes, fechaDia);
+			String[] hoteles,int fechaMes, int fechaDia) {
+		super(codigoAl, tipoAl, pais, nombreH);
 
-		this.nombreH = nombreH;
-		this.precio = precio;
+		this.nombreAl = nombreH;
+		this.precioAl = precio;
 		this.estrellas = estrellas;
 	}
 
 	public String getNombreH() {
-		return nombreH;
+		return nombreAl;
 	}
 
 	public void setNombreH(String nombreH) {
-		this.nombreH = nombreH;
+		this.nombreAl = nombreH;
 	}
 
 	public int getPrecio() {
-		return precio;
+		return precioAl;
 	}
 
 	public void setPrecio(int precio) {
-		this.precio = precio;
+		this.precioAl = precio;
 	}
 
 	public int getEstrellas() {

@@ -41,7 +41,7 @@ public class GestionFicheros {
 				Usuarioo u = new Usuarioo();
 				u.setUsuario(temporal[0]);
 				u.setNombre(temporal[1]);
-				u.setDNI(Integer.parseInt(temporal[2]));
+				u.setDNI((temporal[2]));
 				u.setContrasenia(temporal[3]);
 				// Guardo el en arraylist usuario el contenido del array
 				// temporal

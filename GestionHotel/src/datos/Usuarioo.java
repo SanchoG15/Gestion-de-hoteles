@@ -8,8 +8,10 @@ public class Usuarioo implements Serializable {
 
 	private String Usuario;
 	private String nombre;
-	private int DNI;
+	private String DNI;
 	private String contrasenia;
+
+	private int id;
 	
 	//Constructor
 	public String getUsusario() {
@@ -17,11 +19,12 @@ public class Usuarioo implements Serializable {
 	}
 
 	// Constructor con parametros
-	public Usuarioo(String Ususario, String nombre, int DNI, String contrasenia) {
+	public Usuarioo(String Ususario, String nombre, String DNI, String contrasenia, int Id) {
 		this.Usuario = Usuario;
 		this.nombre = nombre;
 		this.DNI = DNI;
 		this.contrasenia = contrasenia;
+		this.id = Id;
 	}
 
 	// constructor vacio
@@ -45,11 +48,11 @@ public class Usuarioo implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public int getDNI() {
+	public String getDNI() {
 		return this.DNI;
 	}
 
-	public void setDNI(int dNI) {
+	public void setDNI(String dNI) {
 		DNI = dNI;
 	}
 

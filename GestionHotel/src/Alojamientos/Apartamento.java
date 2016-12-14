@@ -4,31 +4,31 @@ import java.io.Serializable;
 
 public abstract class Apartamento extends Alojamiento implements Serializable {
 	private static final long serialVersionUID = 4306348484934038L;
-	private String nombreAp;
+	//private String nombreAp;
 	private int precio;
-	private String tipoAp;
+	//private String tipoAp;
 	
 	//Array de Strings
 	public static String[] apartamentos = { "Posada Doña Manuela", "Apartamentos Casa Rivera", "Euroapartaments",
-			"Tryp Apartaments", "Apartaments California", "Benidorm Apartaments", "Apartamentos tia Paca" };
+			"Tryp Apartaments", "Apartaments California", "Iberia Apartaments", "Apartamentos tia Paca" };
 
 	//Constructor de la clase
 	public Apartamento(String nombreAp, String tipoAp, int precio, int codigoAl, String tipoAl, String pais,
 			String[] apartamentos) {
-		super(codigoAl, tipoAl, pais, nombreAl, fechaMes, fechaDia);
+		super(codigoAl, tipoAl, pais, nombreAp);
 
-		this.nombreAp = nombreAp;
+		this.nombreAl = nombreAp;
 		this.precio = precio;
-		this.tipoAp = tipoAp;
+		this.tipoAl = tipoAp;
 
 	}
 
 	public String getNombreAp() {
-		return nombreAp;
+		return nombreAl;
 	}
 
 	public void setNombreAp(String nombreAp) {
-		this.nombreAp = nombreAp;
+		this.nombreAl = nombreAp;
 	}
 
 	public int getPrecio() {
@@ -40,11 +40,11 @@ public abstract class Apartamento extends Alojamiento implements Serializable {
 	}
 
 	public String getTipoAp() {
-		return tipoAp;
+		return tipoAl;
 	}
 
 	public void setTipoAp(String tipoAp) {
-		this.tipoAp = tipoAp;
+		this.tipoAl = tipoAp;
 	}
 
 	public static String[] getApartamentos() {

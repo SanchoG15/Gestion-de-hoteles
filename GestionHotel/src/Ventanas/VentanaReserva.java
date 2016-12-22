@@ -1,18 +1,33 @@
 package Ventanas;
 
 import java.awt.EventQueue;
-
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Properties;
+import javax.swing.JFormattedTextField.AbstractFormatter;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.BoxLayout;
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
@@ -25,11 +40,17 @@ import java.awt.Color;
 import java.lang.reflect.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import javax.swing.JScrollBar;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.AbstractListModel;
 import javax.swing.JTextArea;
+
+import org.jdatepicker.JDatePicker;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 import Alojamientos.Apartamento;
 import Alojamientos.Hotel;
@@ -39,13 +60,13 @@ import datos.Usuarioo;
 import utilidades.GestionFicheros;
 
 public class VentanaReserva extends JPanel implements ActionListener {
-
+//TAREA INCLUIR CALENDARIO 
 	private JFrame frame;
 	private JButton btnMiReserva, btnVolver;
 	private JList list;
 	private JButton btnNewButton;
 	private JButton btnReservar;
-	private JLabel lblCalendario, lblIntroduceElN, lblDas, lblMes,
+	private JLabel lblCalendario,lblCalendarioS, lblIntroduceElN, lblDas, lblMes,
 			lblSeleccioneElHotel;
 	private JButton btnMisReservas;
 	private JComboBox<String> comboBox_1, comboBox, comboBox_2;
@@ -53,29 +74,11 @@ public class VentanaReserva extends JPanel implements ActionListener {
 	private Usuarioo usuario;
 	private BD bd;
 	private int botonPulsado;
+	JDatePickerImpl datePicker;
+	JDatePickerImpl datePicker1;
 
-
-	/**
-	 * Launch the application.
-	 */
-	/**
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaReserva window = new VentanaReserva();
-					window.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-*/
-	/**
-	 * Create the application.
-	 */
 	public VentanaReserva(Usuarioo usuario, BD bd) {
+		
 		initialize();
 		this.usuario = usuario;
 		this.bd = bd;
@@ -83,9 +86,6 @@ public class VentanaReserva extends JPanel implements ActionListener {
 		frame.setTitle("¡¡Elija su destino favorito, "+usuario.getNombre() +"!!");
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 
 		frame = new JFrame();
@@ -108,38 +108,99 @@ public class VentanaReserva extends JPanel implements ActionListener {
 				t = (new Thread(new Cronometro(frame)));
 
 				t.start();
-				JOptionPane.showMessageDialog(null,
-						"Operación realizada correctamente");
+				ElementoAlojamiento ea=(ElementoAlojamiento) list.getSelectedValue();
+				int numHabitaciones, ocupacion;
+				String sql= "SELECT * FROM ALOJAMIENTO WHERE ID_ALOJAMIENTO = "+ea.getId(); 
 				try {
-
-					GestionFicheros.escribirFichero2(
-							(String) list.getSelectedValue(),
-							(String) comboBox_1.getSelectedItem(),
-							(String) comboBox_2.getSelectedItem(),
-							(String) comboBox.getSelectedItem(),
-							usuario);
-				} catch (Throwable e1) {
+					ResultSet rs = bd.getOrden().executeQuery(sql);
+					if (rs.next()){
+						numHabitaciones= rs.getInt("NUM_HABITACIONES");
+						ocupacion = rs.getInt("NUM_OCUPADAS");
+						if(ocupacion>=numHabitaciones){
+							JOptionPane.showMessageDialog(null,
+									"El alojamiento esta completo, sentimos las molestias.\nNo se ha realizado la reserva.");
+						}else{
+							
+							sql = "INSERT INTO Reservas(ID_ALOJAMIENTO,ID_USUARIOO,FECHA_INI,FECHA_FIN) VALUES("+ea.getId() + ","+usuario.getId() + ",'"+datePicker.getJFormattedTextField().getText() + "','"+datePicker1.getJFormattedTextField().getText()+ "')";
+							System.out.println(sql);
+							try {
+								bd.getOrden().execute(sql);
+							} catch (SQLException e2) {
+								// TODO Auto-generated catch block
+								e2.printStackTrace();
+							}
+							ocupacion++;
+							sql = "UPDATE ALOJAMIENTO SET NUM_OCUPADAS="+ocupacion+" WHERE ID_ALOJAMIENTO ="+ea.getId();
+							System.out.println(sql);
+							try {
+								bd.getOrden().execute(sql);
+							} catch (SQLException e2) {
+								// TODO Auto-generated catch block
+								e2.printStackTrace();
+							}
+							//JOptionPane.showMessageDialog(null,ea.getId()+" "+ usuario.getId()+" "+datePicker.getJFormattedTextField().getText());
+							JOptionPane.showMessageDialog(null,
+									"Operación realizada correctamente"+numHabitaciones+"- "+ocupacion);
+						}
+					}else{
+						JOptionPane.showMessageDialog(null,"Ha ocurrido un error a la hora de reservar el hotel.");
+					}
+				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+//				while(rs.next()){
+//					model.addElement(rs.getInt("ID_ALOJAMIENTO")+"- "+rs.getString("NOMBRE"));		
+				
+//				try {
+//					
+//					GestionFicheros.escribirFichero2(
+//							(ElementoAlojamiento) list.getSelectedValue(),
+//							(String) comboBox_1.getSelectedItem(),
+//							(String) comboBox_2.getSelectedItem(),
+//							(String) comboBox.getSelectedItem(),
+//							usuario);
+//				} catch (Throwable e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
 
 			}
 		});
 
-		lblCalendario = new JLabel("Calendario:");
-		lblCalendario.setBounds(295, 11, 69, 14);
+		lblCalendario = new JLabel("Fecha Entrada:");
+		lblCalendario.setBounds(295, 11, 100, 14);
 		frame.getContentPane().add(lblCalendario);
-
-		lblDas = new JLabel("D\u00EDas");
-		lblDas.setBounds(295, 36, 46, 14);
-		frame.getContentPane().add(lblDas);
-
-		lblMes = new JLabel("Mes");
-		lblMes.setBounds(360, 36, 46, 14);
-		frame.getContentPane().add(lblMes);
-
-		lblIntroduceElN = new JLabel("Introduce la ciudad deseada\r\n");
-		lblIntroduceElN.setBounds(298, 135, 172, 14);
+		
+		//JDatePicker txtFechaIni = new JDatePicker();
+		UtilDateModel model = new UtilDateModel();
+		Properties p = new Properties();
+		p.put("text.today", "Today");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
+		JDatePanelImpl datePanel = new JDatePanelImpl(model,p);
+		datePicker = new JDatePickerImpl(datePanel,new DateLabelFormatter());
+		frame.getContentPane().add(datePicker);
+		datePicker.setBounds(295, 30, 200, 60);
+		datePicker.setVisible(true);
+		
+		lblCalendarioS = new JLabel("Fecha Salida:");
+		lblCalendarioS.setBounds(295, 100, 100, 14);
+		frame.getContentPane().add(lblCalendarioS);
+		
+		UtilDateModel model1 = new UtilDateModel();
+		Properties p1 = new Properties();
+		p1.put("text.today", "Today");
+		p1.put("text.month", "Month");
+		p1.put("text.year", "Year");
+		JDatePanelImpl datePanel1 = new JDatePanelImpl(model1,p1);
+		datePicker1 = new JDatePickerImpl(datePanel1,new DateLabelFormatter());
+		frame.getContentPane().add(datePicker1);
+		datePicker1.setBounds(295, 120, 200, 60);
+		datePicker1.setVisible(true);
+		
+		lblIntroduceElN = new JLabel("Introduce la ciudad deseada:\r\n");
+		lblIntroduceElN.setBounds(295, 170, 180, 40);
 		frame.getContentPane().add(lblIntroduceElN);
 
 		lblSeleccioneElHotel = new JLabel(
@@ -168,7 +229,8 @@ public class VentanaReserva extends JPanel implements ActionListener {
 				"Helsinki", "Praga", "Bruselas", "Moscu", "Atenas",
 				"Viena", "Zurich", "Munich" }));
 		comboBox.setToolTipText("");
-		comboBox.setBounds(325, 160, 89, 20);
+		comboBox.setBounds(295, 200, 100, 30);
+	
 		comboBox.addActionListener(new ActionListener(){
 
 			@Override
@@ -187,10 +249,12 @@ public class VentanaReserva extends JPanel implements ActionListener {
 					list.setModel(model);
 					String sql = "SELECT ID_ALOJAMIENTO,NOMBRE FROM Alojamiento WHERE TIPO = '"+tipo+"' and PAIS = '"+comboBox.getSelectedItem()+"'";
 					System.out.println(sql);
+					ElementoAlojamiento ea = null;
 					try {
 						ResultSet rs = bd.getOrden().executeQuery(sql);
 						while(rs.next()){
-							model.addElement(rs.getInt("ID_ALOJAMIENTO")+"- "+rs.getString("NOMBRE"));					}
+							ea=new ElementoAlojamiento(rs.getInt("ID_ALOJAMIENTO"),rs.getString("NOMBRE"));
+							model.addElement(ea);					}
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -208,13 +272,13 @@ public class VentanaReserva extends JPanel implements ActionListener {
 				"14", "15", "16", "17", "18", "19", "20", "21", "22", "23",
 				"24", "25", "26", "27", "28", "29", "30", "31" }));
 		comboBox_1.setBounds(295, 55, 52, 23);
-		frame.getContentPane().add(comboBox_1);
+		//frame.getContentPane().add(comboBox_1);
 
 		comboBox_2 = new JComboBox();
 		comboBox_2.setModel(new DefaultComboBoxModel(new String[] { "1", "2",
 				"3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
 		comboBox_2.setBounds(360, 55, 52, 23);
-		frame.getContentPane().add(comboBox_2);
+		//frame.getContentPane().add(comboBox_2);
 
 		JButton btnVolver_1 = new JButton("Volver");
 		btnVolver_1.addActionListener(new ActionListener() {
@@ -244,10 +308,12 @@ public class VentanaReserva extends JPanel implements ActionListener {
 					//model.addElement(Apartamento.getApartamentos()[i]);
 				String sql = "SELECT ID_ALOJAMIENTO,NOMBRE FROM Alojamiento WHERE TIPO = 'APARTAMENTO' and PAIS = '"+comboBox.getSelectedItem()+"'";
 				System.out.println(sql);
+				ElementoAlojamiento ea = null;
 				try {
 					ResultSet rs = bd.getOrden().executeQuery(sql);
 					while(rs.next()){
-						model.addElement(rs.getInt("ID_ALOJAMIENTO")+"- "+rs.getString("NOMBRE"));					}
+						ea=new ElementoAlojamiento(rs.getInt("ID_ALOJAMIENTO"),rs.getString("NOMBRE"));
+						model.addElement(ea);					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -269,10 +335,12 @@ public class VentanaReserva extends JPanel implements ActionListener {
 				//	model.addElement(Hotel.getHoteles()[i]);
 				String sql = "SELECT ID_ALOJAMIENTO,NOMBRE FROM Alojamiento WHERE TIPO = 'HOTEL' and PAIS = '"+comboBox.getSelectedItem()+"'";
 				System.out.println(sql);
+				ElementoAlojamiento ea = null;
 				try {
 					ResultSet rs = bd.getOrden().executeQuery(sql);
 					while(rs.next()){
-						model.addElement(rs.getInt("ID_ALOJAMIENTO")+"- "+rs.getString("NOMBRE"));
+						ea=new ElementoAlojamiento(rs.getInt("ID_ALOJAMIENTO"),rs.getString("NOMBRE"));
+						model.addElement(ea);
 					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block

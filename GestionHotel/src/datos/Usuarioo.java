@@ -10,6 +10,20 @@ public class Usuarioo implements Serializable {
 	private String nombre;
 	private String DNI;
 	private String contrasenia;
+	public Usuarioo(String Ususario, String nombre, String DNI, String contrasenia, int Id) {
+		this.Usuario = Usuario;
+		this.nombre = nombre;
+		this.DNI = DNI;
+		this.contrasenia = contrasenia;
+		this.id = Id;
+	}
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	private int id;
 	
@@ -19,13 +33,7 @@ public class Usuarioo implements Serializable {
 	}
 
 	// Constructor con parametros
-	public Usuarioo(String Ususario, String nombre, String DNI, String contrasenia, int Id) {
-		this.Usuario = Usuario;
-		this.nombre = nombre;
-		this.DNI = DNI;
-		this.contrasenia = contrasenia;
-		this.id = Id;
-	}
+	
 
 	// constructor vacio
 	public Usuarioo() {
@@ -67,5 +75,5 @@ public class Usuarioo implements Serializable {
 	public static void getlistaUsuarios(String[] temporal) {
 
 	}
-
+	
 }

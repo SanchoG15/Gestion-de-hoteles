@@ -7,12 +7,12 @@ import java.sql.Statement;
 public class BD {
 		
 	private Statement orden;
-	
+	Connection conn ;
 	public BD() {
 		try {
 			Class.forName("org.sqlite.JDBC");
 		
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:GestionHotel.sqlite");
+        conn = DriverManager.getConnection("jdbc:sqlite:GestionHotel.sqlite");
         orden = conn.createStatement();
 		} catch (Exception e) {
 			
@@ -22,6 +22,14 @@ public class BD {
 
 	public Statement getOrden() {
 		return orden;
+	}
+	public void cerrar(){
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

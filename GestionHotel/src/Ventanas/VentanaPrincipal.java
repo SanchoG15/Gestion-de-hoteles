@@ -37,23 +37,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class VentanaPrincipal extends JPanel implements ActionListener {
-	// Mejoras:
-	//Comprobar que el usuario no exista al registarte
-	
 
-	private ArrayList<Usuarioo> listaUsuarios = new ArrayList<Usuarioo>();
-	private JButton btnRegistrarse, btnSalir, btnInformación;
-	public static JButton btnEntrar;
-	private JButton btnNewButton;
-	private JTextField txtContrasea;
-	private JTextField txtUsuario;
 	private JFrame jfM;
 	private JLabel lblContrasea, lblUsusario;
 	private BD bd;
-	
+	private ArrayList<Usuarioo> listaUsuarios = new ArrayList<Usuarioo>();
+	private JButton btnRegistrarse, btnSalir, btnInformación;
+	private JButton btnNewButton;
+	public static JButton btnEntrar;
+	private JTextField txtContrasea;
+	private JTextField txtUsuario;
+
 	public VentanaPrincipal() {
-		
-		bd=new BD();
+
+		bd = new BD();
 		jfM = new JFrame("Bienvenido a Taubmann`s Sleep in");
 		jfM.getContentPane().setLayout(null);
 
@@ -62,13 +59,15 @@ public class VentanaPrincipal extends JPanel implements ActionListener {
 		this.add(p, BorderLayout.CENTER);
 		p.repaint();
 
+		// Crea los distintos botones de la ventana.
 		btnRegistrarse = new JButton("Registrarse");
 		btnRegistrarse.setBackground(UIManager.getColor("Button.darkShadow"));
 		btnRegistrarse.addActionListener(this);
+
 		btnSalir = new JButton("Salir");
 		btnSalir.setBackground(UIManager.getColor("CheckBox.darkShadow"));
-
 		btnSalir.addActionListener(this);
+
 		btnInformación = new JButton("Información");
 		btnInformación.setBackground(UIManager.getColor("Button.darkShadow"));
 		btnInformación.addActionListener(this);
@@ -77,16 +76,19 @@ public class VentanaPrincipal extends JPanel implements ActionListener {
 		btnEntrar.setBackground(SystemColor.activeCaption);
 		btnEntrar.addActionListener(this);
 
+		// Da tamaño a los botones creados.
 		btnRegistrarse.setBounds(293, 28, 133, 32);
 		btnSalir.setBounds(375, 325, 150, 32);
 		btnInformación.setBounds(108, 325, 133, 32);
 		btnEntrar.setBounds(279, 175, 89, 23);
 
+		// Incluye los botones al panel
 		jfM.getContentPane().add(btnRegistrarse);
 		jfM.getContentPane().add(btnSalir);
 		jfM.getContentPane().add(btnInformación);
 		jfM.getContentPane().add(btnEntrar);
 
+		// Gestion de etiquetas.
 		txtContrasea = new JTextField();
 		txtContrasea.setBounds(124, 156, 86, 20);
 		jfM.getContentPane().add(txtContrasea);
@@ -104,18 +106,18 @@ public class VentanaPrincipal extends JPanel implements ActionListener {
 		lblContrasea.setBounds(27, 150, 87, 32);
 		jfM.getContentPane().add(lblContrasea);
 
+		// Boton para la contraseña olvidada.
 		btnNewButton = new JButton("\u00BFContrase\u00F1a olvidada?");
 		btnNewButton.addActionListener(this);
 		btnNewButton.setBounds(72, 235, 183, 23);
 		jfM.getContentPane().add(btnNewButton);
 		btnNewButton.addActionListener(new ActionListener() {
-
+			// Salta a una nueva ventana en la que recuperar la contraseña.
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				jfM.setVisible(false);
 				VentanaRecuperarContraseña vR = new VentanaRecuperarContraseña(bd);
 				vR.getFrame().setVisible(true);
-
 			}
 		});
 
@@ -127,65 +129,61 @@ public class VentanaPrincipal extends JPanel implements ActionListener {
 	}
 
 	public static void main(String[] args) {
-		VentanaPrincipal vp = new VentanaPrincipal();// uso de constructor para
-														// la ventana
 
+		VentanaPrincipal vp = new VentanaPrincipal();
 	}
 
 	public void actionPerformed(ActionEvent e) {// sobreescribimos el metodo del
 												// listener
-
 		JButton botonPulsado = (JButton) e.getSource();
+
+		// Abre una nueva ventana para llevar acabo el registro.
 		if (botonPulsado.equals(btnRegistrarse)) {
 
 			jfM.setVisible(false);
 			new VentanaRegistro(bd);
 		}
-
+		// Abre una nueva ventana con la informacion del programa.
 		if (botonPulsado.equals(btnInformación)) {
 
 			new Información();
 		}
+		// Sale del programa.
 		if (botonPulsado.equals(btnSalir)) {
 
 			jfM.setVisible(false);
 			System.exit(0);
-
 		}
+		// Es el boton que acepta o deniega el login del ususario.
 		if (botonPulsado.equals(btnEntrar)) {
-			
-			// Comparo el usuario introducido con el fichero si no coincide,
-			// mensaje de error
-			//listaUsuarios = GestionFicheros.leerFichero();
+
 			boolean elemento = false;
-//			for (Usuarioo usuario : listaUsuarios) {
-//				if (usuario.getUsuario().equals(txtUsuario.getText())
-//						&& usuario.getContrasenia().equals(
-//								txtContrasea.getText())) {
-//					jfM.setVisible(false);
-//					new VentanaReserva(usuario,bd);
-//					elemento = true;
-//				}
-//
-//			}
-			String sql = "SELECT * FROM USUARIOO WHERE USUARIO = '"+txtUsuario.getText()+"' and CONTRASENIA='"+txtContrasea.getText()+"'";
+
+			ResultSet rs = null;
+			// Hace una consulta para ver si el usuario existe y es valido.
+			String sql = "SELECT * FROM USUARIOO WHERE USUARIO = '" + txtUsuario.getText() + "' and CONTRASENIA='"
+					+ txtContrasea.getText() + "'";
 			try {
-				ResultSet rs = bd.getOrden().executeQuery(sql);
-				if(!rs.next()){
-					JOptionPane.showMessageDialog(null,
-						"El usuario/contraseña introducido es incorrecto",
-						"WARNING_MESSAGE", JOptionPane.WARNING_MESSAGE);
-				}else{
+				// Conecta conla bd y lleva acabo la consulta.
+				rs = bd.ejecutarConsulta(sql);
+				// En caso de no coincidir saltara el mensaje de aviso.
+				if (!rs.next()) {
+					JOptionPane.showMessageDialog(null, "El usuario/contraseña introducido es incorrecto",
+							"WARNING_MESSAGE", JOptionPane.WARNING_MESSAGE);
+				} else {
 					jfM.setVisible(false);
-					Usuarioo u = new Usuarioo(rs.getString("USUARIO"),rs.getString("NOMBRE"),rs.getString("DNI"),rs.getString("CONTRASENIA"),rs.getInt("ID_USUARIOO"));
-					new VentanaReserva(u,bd);
+					// Crea una ventana reserva con el usuario y la bd.
+					Usuarioo u = new Usuarioo(rs.getString("USUARIO"), rs.getString("NOMBRE"), rs.getString("DNI"),
+							rs.getString("CONTRASENIA"), rs.getInt("ID_USUARIOO"));
+					new VentanaReserva(u, bd);
 				}
-					
+
 			} catch (SQLException e1) {
-				
+
 				e1.printStackTrace();
 			}
-				
+			// Termina la conexion y la consulta.
+			bd.terminarConsulta(rs);
 		}
 	}
 

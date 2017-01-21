@@ -1,24 +1,27 @@
 package Alojamientos;
 
+//Clase padre de las clases Hotel y Apartamento.
 public class Alojamiento {
 
+	//Atributos basicos de los alojamientos.
 	protected int codigoAl;
 	protected String tipoAl;
 	protected String pais;
 	protected String nombreAl;
 	protected int precioAl;
 
-	// Constructor de la clase
+	// Constructor de la clase con atributos.
 	public Alojamiento(int codigoAl, String tipoAl, String pais, String nombreAl) {
-
 		codigoAl = this.codigoAl;
 		tipoAl = this.tipoAl;
 		pais = this.pais;
 		nombreAl = this.nombreAl;
-
 	}
 
-	// Gesters and Seters
+	/**
+	 * Constructor vacio, getters y setters de todos los atributos de la clase.
+	 */
+
 	public int getCodigoAl() {
 		return codigoAl;
 	}
@@ -48,8 +51,7 @@ public class Alojamiento {
 	}
 
 	public void setNombreAl(String nombreAl) {
-		nombreAl = nombreAl;
+		this.nombreAl = nombreAl;
 	}
 
-	
 }

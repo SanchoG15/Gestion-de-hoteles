@@ -3,18 +3,19 @@ package Alojamientos;
 import java.io.Serializable;
 
 public abstract class Hotel extends Alojamiento implements Serializable {
-	private static final long serialVersionUID = 1029656478665098638L;
 	
-	//private String nombreH;
-	//private int precio;
 	private int estrellas;
+	
+	//Array de String con los nombres de los hoteles.
 	static String[] hoteles = { "NH", "Barcelo", "Hilton", "Tryp", "Hesperia", "Hotel Europa", "Melia", "Park Hotel" };
 
-	//Constructor de la clase
+	/**
+	 * Constructor de la clase y getters y setters necesarios.
+	 **/
 	public Hotel(String nombreH, int precio, int estrellas, int codigoAl, String tipoAl, String pais,
 			String[] hoteles,int fechaMes, int fechaDia) {
+		
 		super(codigoAl, tipoAl, pais, nombreH);
-
 		this.nombreAl = nombreH;
 		this.precioAl = precio;
 		this.estrellas = estrellas;

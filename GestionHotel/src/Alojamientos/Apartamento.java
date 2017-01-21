@@ -3,20 +3,20 @@ package Alojamientos;
 import java.io.Serializable;
 
 public abstract class Apartamento extends Alojamiento implements Serializable {
-	private static final long serialVersionUID = 4306348484934038L;
-	//private String nombreAp;
+
 	private int precio;
-	//private String tipoAp;
-	
-	//Array de Strings
+
+	// Array de Strings con los nombres de los apartamentos.
 	public static String[] apartamentos = { "Posada Doña Manuela", "Apartamentos Casa Rivera", "Euroapartaments",
 			"Tryp Apartaments", "Apartaments California", "Iberia Apartaments", "Apartamentos tia Paca" };
 
-	//Constructor de la clase
+	/** 
+	 * Constructor de la clase y getters y setters necesarios.
+	 * */
 	public Apartamento(String nombreAp, String tipoAp, int precio, int codigoAl, String tipoAl, String pais,
 			String[] apartamentos) {
-		super(codigoAl, tipoAl, pais, nombreAp);
 
+		super(codigoAl, tipoAl, pais, nombreAp);
 		this.nombreAl = nombreAp;
 		this.precio = precio;
 		this.tipoAl = tipoAp;
@@ -54,13 +54,4 @@ public abstract class Apartamento extends Alojamiento implements Serializable {
 	public static void setApartamentos(String[] apartamentos) {
 		Apartamento.apartamentos = apartamentos;
 	}
-/**
-	 public void listaApartamentos(String[] apartamentos){
-	
-	 for (int i = 0; i < apartamentos.length; i++) {
-	 System.out.println(apartamentos[i]);
-	 }
-
-	 }
-*/
 }

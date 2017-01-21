@@ -23,22 +23,18 @@ import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
-public class VentanaRecuperarContraseña extends JPanel implements
-		ActionListener {
+public class VentanaRecuperarContraseña extends JPanel implements ActionListener {
 
 	private JFrame frame;
 	private JTextField textField;
+	private JTextField textField_1;
 	private JButton btnAceptar;
 	private JLabel lblNewLabel;
 	private JLabel lblUsuario;
 	private JLabel lblNombre;
-	private JTextField textField_1;
-	private ArrayList<Usuarioo> listaUsuario= new ArrayList<Usuarioo>();
+	private ArrayList<Usuarioo> listaUsuario = new ArrayList<Usuarioo>();
 	private BD bd;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -54,51 +50,34 @@ public class VentanaRecuperarContraseña extends JPanel implements
 
 	// Metodo que comprueba el usuario y nombre y devuelve la contraseña de este
 	public void devolverContraseña() {
-		String sql = "SELECT * FROM USUARIOO WHERE USUARIO = '"+textField.getText()+"' and NOMBRE='"+textField_1.getText()+"'";
+		// Gestiona la consulta para recuperar los datos del ususario.
+		String sql = "SELECT * FROM USUARIOO WHERE USUARIO = '" + textField.getText() + "' and NOMBRE='"
+				+ textField_1.getText() + "'";
 		try {
+			// Abre conexion con la bd y realiza la consulta.
 			ResultSet rs = bd.getOrden().executeQuery(sql);
-			if(!rs.next()){
-				JOptionPane.showMessageDialog(null,
-					"El usuario no esta en el sistema.",
-					"WARNING_MESSAGE", JOptionPane.WARNING_MESSAGE);
-			}else{
-				JOptionPane.showMessageDialog(null,
-						"La contraseña es "+rs.getString("CONTRASENIA"),
+			// Aviso si no existe el usuario.
+			if (!rs.next()) {
+				JOptionPane.showMessageDialog(null, "El usuario no esta en el sistema.", "WARNING_MESSAGE",
+						JOptionPane.WARNING_MESSAGE);
+				// En caso de existir devuelve la contraseña.
+			} else {
+				JOptionPane.showMessageDialog(null, "La contraseña es " + rs.getString("CONTRASENIA"),
 						"WARNING_MESSAGE", JOptionPane.WARNING_MESSAGE);
 			}
-				
 		} catch (SQLException e1) {
-			
 			e1.printStackTrace();
 		}
-//		listaUsuario  = GestionFicheros.leerFichero();
-//		
-//		String contraseña = "";
-//		for (Usuarioo usuario : listaUsuario) {
-//			if (usuario.getUsuario().equals(textField.getText())
-//					&& usuario.getNombre().equals(textField_1.getText())) {
-//				
-//				contraseña = usuario.getContrasenia();
-//
-//			}
-//		}
-//		return contraseña;
-
 	}
 
-	/**
-	 * Create the application.
-	 */
+	// Constructor de la ventana.
 	public VentanaRecuperarContraseña(BD bd) {
 		initialize();
-		this.bd= bd;
+		this.bd = bd;
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
-
+		// Gestiona la ventana de recuperarContraseña.
 		frame = new JFrame("Identificate para recivir la cotraseña");
 		frame.getContentPane().setBackground(new Color(240, 240, 240));
 		frame.setBounds(100, 100, 450, 300);

@@ -1,10 +1,11 @@
 package Ventanas;
 
 public class ElementoAlojamiento {
-	
+
 	int id;
 	String nombre;
-	
+
+	// Clase creada para el manejo de id en las gestiones de bd.
 	public ElementoAlojamiento(int id, String nombre) {
 		super();
 		this.id = id;
@@ -19,5 +20,5 @@ public class ElementoAlojamiento {
 	public int getId() {
 		return id;
 	}
-	
+
 }

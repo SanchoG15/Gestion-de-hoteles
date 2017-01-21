@@ -4,12 +4,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Usuarioo implements Serializable {
-	private static final long serialVersionUID = 56302426476654346L;
-
+	// Atributos de los usuarios.
 	private String Usuario;
 	private String nombre;
 	private String DNI;
 	private String contrasenia;
+	private int id;
+
+	/**
+	 * Constructores y getters y setters necesarios.
+	 */
 	public Usuarioo(String Ususario, String nombre, String DNI, String contrasenia, int Id) {
 		this.Usuario = Usuario;
 		this.nombre = nombre;
@@ -17,6 +21,11 @@ public class Usuarioo implements Serializable {
 		this.contrasenia = contrasenia;
 		this.id = Id;
 	}
+
+	public Usuarioo() {
+
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -25,19 +34,8 @@ public class Usuarioo implements Serializable {
 		this.id = id;
 	}
 
-	private int id;
-	
-	//Constructor
 	public String getUsusario() {
 		return Usuario;
-	}
-
-	// Constructor con parametros
-	
-
-	// constructor vacio
-	public Usuarioo() {
-		
 	}
 
 	public String getUsuario() {
@@ -75,5 +73,5 @@ public class Usuarioo implements Serializable {
 	public static void getlistaUsuarios(String[] temporal) {
 
 	}
-	
+
 }

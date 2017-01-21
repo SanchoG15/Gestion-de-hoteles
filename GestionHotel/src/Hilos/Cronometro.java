@@ -12,8 +12,7 @@ import Ventanas.VentanaPrincipal;
 import Ventanas.VentanaReserva;
 
 public class Cronometro implements Runnable {
-	private static final long serialVersionUID = 134634533635537L;
-	
+
 	private int minutos;
 	private int segundos;
 	private boolean cronometroActivo;
@@ -25,7 +24,7 @@ public class Cronometro implements Runnable {
 		cronometroActivo = true;
 	}
 
-	//Hilo de gestion de eventos
+	// Hilo de gestion de eventos
 	public void run() {
 		try {
 			// Mientras cronometroActivo sea true seguira aumentando el tiempo
@@ -40,13 +39,14 @@ public class Cronometro implements Runnable {
 					minutos++;
 
 				}
-				// cuando el contador llega a un minuto da el aviso
+				// Cuando el contador llega a un minuto da el aviso y sale del
+				// bucle.
 				if (minutos >= 1) {
 					cronometroActivo = false;
 				}
 			}
 			if (cronometroActivo == false) {
-				// Aviso de tiempo exedido, sale de la aplicacion
+				// Aviso de tiempo exedido, sale de la aplicacion.
 				JOptionPane.showMessageDialog(frame2, "Tiempo de reserva excedido", "WARNING_MESSAGE",
 						JOptionPane.WARNING_MESSAGE);
 				System.exit(0);

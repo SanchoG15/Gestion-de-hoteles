@@ -6,24 +6,26 @@ import java.util.Calendar;
 
 import javax.swing.JFormattedTextField.AbstractFormatter;
 
+//Clase para el uso de los calendarios extensibles de la VentanaReservas.
+//**Cogida integramente de internet para poder hacer uso de ella.
 public class DateLabelFormatter extends AbstractFormatter {
 
-    private String datePattern = "yyyy-MM-dd";
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+	private String datePattern = "yyyy-MM-dd";
+	private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 
-    @Override
-    public Object stringToValue(String text) throws ParseException {
-        return dateFormatter.parseObject(text);
-    }
+	@Override
+	public Object stringToValue(String text) throws ParseException {
+		return dateFormatter.parseObject(text);
+	}
 
-    @Override
-    public String valueToString(Object value) throws ParseException {
-        if (value != null) {
-            Calendar cal = (Calendar) value;
-            return dateFormatter.format(cal.getTime());
-        }
+	@Override
+	public String valueToString(Object value) throws ParseException {
+		if (value != null) {
+			Calendar cal = (Calendar) value;
+			return dateFormatter.format(cal.getTime());
+		}
 
-        return "";
-    }
+		return "";
+	}
 
 }

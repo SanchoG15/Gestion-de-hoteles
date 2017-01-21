@@ -21,26 +21,26 @@ public class Información extends JDialog implements ActionListener {
 
 	public Información() {
 		setTitle("Información");
-		// setBounds(x,y,a,b)
 		setBounds(100, 100, 600, 465);
-		// Indica el borde de el panel
+
+		// Indica las coordenadas de el borde de el panel
 		getContentPane().setLayout(new BorderLayout());
 		panelInformación.setLayout(new FlowLayout());
 		panelInformación.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(panelInformación, BorderLayout.CENTER);
 		{
+			// Diseño del panel de informaion.
 			JScrollPane scrollPane = new JScrollPane();
 			JTextArea textArea = new JTextArea();
 			textArea.setEditable(false);
-			// Indica el color, en caso de querer cambiar el color a el el fondo
-			// de el panel
-			// cambiar los numeros
 			textArea.setBackground(new Color(250, 250, 250));
 			// El tipo de letra
 			textArea.setFont(new Font("Times New Roman", Font.BOLD, 15));
 			scrollPane.setViewportView(textArea);
-			textArea.setRows(30);// largura del jpanel
-			textArea.setColumns(50);// ancho de jpanel
+			// Largura del jpanel
+			textArea.setRows(30);
+			// Ancho de jpanel
+			textArea.setColumns(50);
 			panelInformación.add(scrollPane);
 			textArea.setText("\n                                                            \n\n"
 					+ "                ¿Cansado de buscar alojamiento y no encontrar nada? \n" + "\n"
@@ -54,11 +54,11 @@ public class Información extends JDialog implements ActionListener {
 					+ "                901456839 (numero de pago)\n");
 
 			textArea.setCaretPosition(0);
-
 		}
 		{
-			// Creamos ademas de el panel, el boton OK
-			// para cuando hayamos terminado de leer la ayuda cerrar el panel
+			/** Creamos ademas de el panel, el boton OK.
+			*   Para cuando hayamos terminado de leer la ayuda cerrar el panel.
+			*/ 
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
@@ -73,6 +73,7 @@ public class Información extends JDialog implements ActionListener {
 		setVisible(true);
 	}
 
+	// actionPerformed que cierra la ventana de informacion.
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equalsIgnoreCase("ok")) {
 			ventana.dispose();
